@@ -1,0 +1,362 @@
+mermaid-diagram-flowchart-start
+``````{tab-set}
+
+`````{tab-item} Diagram
+
+```{mermaid}
+flowchart LR
+    A([New PR])
+    B[Needs review]
+    C{Review approved?}
+    D{Merge conflicts?}
+    E[Needs work]
+    F[Needs CI]
+    G{Passed testing?}
+    H[Ready for merge]
+    I[(PR merged)]
+    J{Comments addressed?}
+    K[(PR closed)]
+
+    A --> B
+    B --> C
+    C -- no --> E
+    C -- yes --> D
+    D -- yes --> E
+    D -- no --> F
+    F --> G
+    G -- yes --> H
+    G -- no --> E
+    H --> I
+    E --> J
+    J -- yes --> B
+    J -- no --> K
+```
+
+`````
+
+`````{tab-item} MyST
+
+````{code-block} md
+```{mermaid}
+flowchart LR
+    A([New PR])
+    B[Needs review]
+    C{Review approved?}
+    D{Merge conflicts?}
+    E[Needs work]
+    F[Needs CI]
+    G{Passed testing?}
+    H[Ready for merge]
+    I[(PR merged)]
+    J{Comments addressed?}
+    K[(PR closed)]
+
+    A --> B
+    B --> C
+    C -- no --> E
+    C -- yes --> D
+    D -- yes --> E
+    D -- no --> F
+    F --> G
+    G -- yes --> H
+    G -- no --> E
+    H --> I
+    E --> J
+    J -- yes --> B
+    J -- no --> K
+```
+````
+
+`````
+
+`````{tab-item} rST
+
+````{code-block} rst
+.. mermaid::
+
+   flowchart LR
+       A([New PR])
+       B[Needs review]
+       C{Review approved?}
+       D{Merge conflicts?}
+       E[Needs work]
+       F[Needs CI]
+       G{Passed testing?}
+       H[Ready for merge]
+       I[(PR merged)]
+       J{Comments addressed?}
+       K[(PR closed)]
+   
+       A --> B
+       B --> C
+       C -- no --> E
+       C -- yes --> D
+       D -- yes --> E
+       D -- no --> F
+       F --> G
+       G -- yes --> H
+       G -- no --> E
+       H --> I
+       E --> J
+       J -- yes --> B
+       J -- no --> K
+````
+
+`````
+``````
+mermaid-diagram-flowchart-end
+
+mermaid-diagram-sequence-start
+``````{tab-set}
+
+`````{tab-item} Diagram
+
+```{mermaid}
+sequenceDiagram
+    participant User
+    participant Snap as snapd (Client)
+    participant Store as Snap Store
+    participant System
+
+    User->>Snap: snap install hello
+    Snap->>Store: Request snap info and download
+    Store-->>Snap: Return snap package
+    Snap->>System: Install and mount snap
+    System-->>Snap: Installation result
+    Snap-->>User: Confirm snap is installed
+```
+
+`````
+
+`````{tab-item} Custom CSS
+
+Create a CSS file (e.g. {file}`mermaid-sequence.css`) with the code below and save it in the {file}`_static` folder.
+This only override the "actor" box in sequence diagrams.
+
+```{code-block} css
+.actor {
+  stroke: #eb6536 !important;
+  stroke-width: 2;
+  fill: #f5b29b !important;
+}
+text.actor {
+  fill: black;
+  stroke: none;
+  font-family: Helvetica;
+}
+
+.actor-line {
+  stroke: #77216f;
+}
+```
+
+Then modify {file}`conf.py` so the CSS is used in your project.
+1. Uncomment the `html_static_path = ["_static"]` line.
+1. Add "mermaid-sequence.css" to the "html_css_files" list.
+
+   ```{code-block} python
+   html_css_files = [
+       "mermaid-sequence.css",
+   ]
+   ```
+
+`````
+
+`````{tab-item} MyST
+
+````{code-block} md
+```{mermaid}
+sequenceDiagram
+    participant User
+    participant Snap as snapd (Client)
+    participant Store as Snap Store
+    participant System
+
+    User->>Snap: snap install hello
+    Snap->>Store: Request snap info and download
+    Store-->>Snap: Return snap package
+    Snap->>System: Install and mount snap
+    System-->>Snap: Installation result
+    Snap-->>User: Confirm snap is installed
+```
+````
+
+`````
+
+`````{tab-item} rST
+
+````{code-block} rst
+.. mermaid::
+
+   sequenceDiagram
+       participant User
+       participant Snap as snapd (Client)
+       participant Store as Snap Store
+       participant System
+   
+       User->>Snap: snap install hello
+       Snap->>Store: Request snap info and download
+       Store-->>Snap: Return snap package
+       Snap->>System: Install and mount snap
+       System-->>Snap: Installation result
+       Snap-->>User: Confirm snap is installed
+````
+
+`````
+``````
+mermaid-diagram-sequence-end
+
+mermaid-diagram-timeline-start
+``````{tab-set}
+
+`````{tab-item} Diagram
+
+```{mermaid}
+%%{init: {"theme":"forest"}}%%
+timeline
+    title Ubuntu recent releases
+
+    2020 : 20.04 LTS (Focal Fossa) : 20.10 (Groovy Gorilla)
+    2021 : 21.04 (Hirsute Hippo) : 21.10 (Impish Indri)   
+    2022 : 22.04 LTS (Jammy Jellyfish) : 22.10 (Kinetic Kudu)
+    2023 : 23.04 (Lunar Lobster) : 23.10 (Mantic Minotaur)
+    2024 : 24.04 LTS (Noble Numbat) : 24.10 (Oracular Oriole)
+    2025 : 25.04 (Plucky Puffin)
+```
+
+`````
+
+`````{tab-item} MyST
+
+````{code-block} md
+:emphasize-lines: 2
+```{mermaid}
+%%{init: {"theme":"forest"}}%%
+timeline
+    title Ubuntu recent releases
+
+    2020 : 20.04 LTS (Focal Fossa) : 20.10 (Groovy Gorilla)
+    2021 : 21.04 (Hirsute Hippo) : 21.10 (Impish Indri)   
+    2022 : 22.04 LTS (Jammy Jellyfish) : 22.10 (Kinetic Kudu)
+    2023 : 23.04 (Lunar Lobster) : 23.10 (Mantic Minotaur)
+    2024 : 24.04 LTS (Noble Numbat) : 24.10 (Oracular Oriole)
+    2025 : 25.04 (Plucky Puffin)
+```
+````
+
+`````
+
+`````{tab-item} rST
+
+````{code-block} rst
+:emphasize-lines: 3
+
+.. mermaid::
+
+   %%{init: {"theme":"forest"}}%%
+   timeline
+       title Ubuntu recent releases
+
+       2020 : 20.04 LTS (Focal Fossa) : 20.10 (Groovy Gorilla)
+       2021 : 21.04 (Hirsute Hippo) : 21.10 (Impish Indri)   
+       2022 : 22.04 LTS (Jammy Jellyfish) : 22.10 (Kinetic Kudu)
+       2023 : 23.04 (Lunar Lobster) : 23.10 (Mantic Minotaur)
+       2024 : 24.04 LTS (Noble Numbat) : 24.10 (Oracular Oriole)
+       2025 : 25.04 (Plucky Puffin)
+````
+
+`````
+``````
+mermaid-diagram-timeline-end
+
+mermaid-diagram-state-start
+``````{tab-set}
+
+`````{tab-item} Diagram
+
+
+```{mermaid}
+stateDiagram-v2
+    classDef review fill:#FCE83A
+    classDef approved  fill:#2DCCFF
+    classDef published fill:#56F000
+    classDef archived fill:#7B8089
+
+    [*] --> Draft
+    Draft --> Review : submit for review
+    Review --> Draft : changes requested
+    Review --> Approved : review passed
+    Approved --> Build : trigger build
+    Build --> Published : build success
+    Build --> Draft : build failed
+    Published --> Archived : old version
+
+    class Review review
+    class Approved approved
+    class Published published
+    class Archived archived
+```
+
+`````
+
+`````{tab-item} MyST
+
+````{code-block} md
+:emphasize-lines: 3-6, 17-20
+
+```{mermaid}
+stateDiagram-v2
+    classDef review fill:#FCE83A
+    classDef approved  fill:#2DCCFF
+    classDef published fill:#56F000
+    classDef archived fill:#7B8089
+
+    [*] --> Draft
+    Draft --> Review : submit for review
+    Review --> Draft : changes requested
+    Review --> Approved : review passed
+    Approved --> Build : trigger build
+    Build --> Published : build success
+    Build --> Draft : build failed
+    Published --> Archived : old version
+
+    class Review review
+    class Approved approved
+    class Published published
+    class Archived archived
+```
+````
+
+`````
+
+`````{tab-item} rST
+
+````{code-block} rst
+:emphasize-lines: 4-7, 18-21
+
+.. mermaid::
+
+    stateDiagram-v2
+        classDef review fill:#FCE83A
+        classDef approved  fill:#2DCCFF
+        classDef published fill:#56F000
+        classDef archived fill:#7B8089
+    
+        [*] --> Draft
+        Draft --> Review : submit for review
+        Review --> Draft : changes requested
+        Review --> Approved : review passed
+        Approved --> Build : trigger build
+        Build --> Published : build success
+        Build --> Draft : build failed
+        Published --> Archived : old version
+    
+        class Review review
+        class Approved approved
+        class Published published
+        class Archived archived
+````
+
+`````
+``````
+mermaid-diagram-state-end

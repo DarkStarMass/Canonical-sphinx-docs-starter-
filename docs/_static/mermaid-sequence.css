@@ -1,0 +1,14 @@
+.actor {
+  stroke: #eb6536 !important;
+  stroke-width: 2;
+  fill: #f5b29b !important;
+}
+text.actor {
+  fill: black;
+  stroke: none;
+  font-family: Helvetica;
+}
+
+.actor-line {
+  stroke: #77216f;
+}
