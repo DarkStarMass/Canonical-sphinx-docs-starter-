@@ -135,15 +135,14 @@ def main():
 
 def update_static_files():
     """Checks local files against remote for new and different files, downloads to '.sphinx/updates'"""
-    files, paths = get_local_files_and_paths()
+    local_files = get_local_files_and_paths()
     new_file_list = []
 
     for item in query_api(GITHUB_API_SPHINX_DIR).json():
         logging.debug(f"Checking {item['name']}")
         # Checks existing files in '.sphinx' starter pack static root for changed SHA
-        if item["name"] in files and item["type"] == "file":
-            index = files.index(item["name"])
-            if item["sha"] != get_git_revision_hash(paths[index]):
+        if item["name"] in local_files and item["type"] == "file":
+            if item["sha"] != get_git_revision_hash(local_files[item["name"]]):
                 logging.debug(f"Local {item['name']} is different to remote")
                 download_file(
                     item["download_url"], os.path.join(SPHINX_UPDATE_DIR, item["name"])
@@ -164,9 +163,10 @@ def update_static_files():
                 f"{GITHUB_API_SPHINX_DIR}/{item['name']}"
             ).json():
                 logging.debug(f"Checking {nested_item['name']}")
-                if nested_item["name"] in files:
-                    index = files.index(nested_item["name"])
-                    if nested_item["sha"] != get_git_revision_hash(paths[index]):
+                if nested_item["name"] in local_files:
+                    if nested_item["sha"] != get_git_revision_hash(
+                        local_files[nested_item["name"]]
+                    ):
                         logging.debug(
                             f"Local {nested_item['name']} is different to remote"
                         )
@@ -226,16 +226,15 @@ def get_local_files_and_paths():
     """Identify '.sphinx' local files and paths"""
     logging.debug("Checking local files and paths")
     try:
-        files = []
-        paths = []
+        local_files = {}
         patterns = [".*", "**.*", "metrics/**.*"]
-        files, paths = [], []
 
         for pattern in patterns:
             for file in glob.iglob(os.path.join(SPHINX_DIR, pattern), recursive=True):
-                files.append(os.path.basename(file))
-                paths.append(file)
-        return files, paths
+                basename = os.path.basename(file)
+                if basename not in local_files:
+                    local_files[basename] = file
+        return local_files
     except Exception as e:
         logging.debug(e)
         raise RuntimeError("get_local_files_and_paths()") from e
